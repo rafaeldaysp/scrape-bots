@@ -1,7 +1,7 @@
 import requests
 import json
 import concurrent.futures
-import acer_scrape, magalu_scrape, amazon_scrape, aliexpress_scrape #incluir os demais varejistas
+import acer_scrape, magalu_scrape, amazon_scrape, aliexpress_scrape, carrefour_scrape, casasbahia_scrape, kabum_scrape
 import time
 
 API_KEY = 'UfLk014eu5loeUzkBWi67ku9s2FGdNuFTmxcysQGO7BZS0NfIQQyCXpQ1GzAHDUHfQKTJDnAIBSQAOmYbnnczuoe5ys8maufkBpk73kbqGzeWYD9qGysLXidBMzWeDnN'
@@ -55,6 +55,14 @@ def scraping(product):
             price, store = aliexpress_scrape.scrape(url, retailer['dummy'])
         if retailer_id == RETAILERS_ID['AMAZON']:
             price, store = amazon_scrape.scrape(url)
+        if retailer_id == RETAILERS_ID['CASAS BAHIA']:
+            price, store = casasbahia_scrape.scrape(url)
+        if retailer_id == RETAILERS_ID['KABUM']:
+            price, store = kabum_scrape.scrape(url)
+        if retailer_id == RETAILERS_ID['CARREFOUR']:
+            price, store = carrefour_scrape.scrape(url)
+        if retailer_id == RETAILERS_ID['MAGALU']:
+            price, store = magalu_scrape.scrape(url)
         if price != -1:
             coupon_data = coupon_handle(price, store, retailer, product)
             data['available'] = True
