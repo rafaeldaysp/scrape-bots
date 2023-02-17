@@ -7,7 +7,7 @@ def scrape(url):
     available_status = soup.find('span', class_='b vtex-rich-text-0-x-strong')
     if available_status:
         print('Indisponível')
-        return -1
+        return -1, None
     coupons = soup.find_all('div', class_='vtex-flex-layout-0-x-flexColChild vtex-flex-layout-0-x-flexColChild--flagCoupon pb0')
     cupom_value = 0
     for i in range(len(coupons)):
