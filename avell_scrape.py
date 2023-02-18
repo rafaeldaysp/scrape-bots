@@ -12,14 +12,4 @@ def scrape(url):
     return price, 'Avell'
 
 if __name__ == '__main__':
-    scrape('https://avell.idevaffiliate.com/idevaffiliate.php?id=218&url=852')
-
-
-
-
-
-
-
-
-
-'MuiTypography-root MuiTypography-h3'
+    pass
