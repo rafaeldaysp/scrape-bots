@@ -1,7 +1,7 @@
 import requests
 import json
 import concurrent.futures
-import acer_scrape, magalu_scrape, amazon_scrape, aliexpress_scrape, carrefour_scrape, casasbahia_scrape, kabum_scrape
+from bots import acer_scrape, magalu_scrape, amazon_scrape, aliexpress_scrape, carrefour_scrape, casasbahia_scrape, kabum_scrape
 import time
 
 API_KEY = 'UfLk014eu5loeUzkBWi67ku9s2FGdNuFTmxcysQGO7BZS0NfIQQyCXpQ1GzAHDUHfQKTJDnAIBSQAOmYbnnczuoe5ys8maufkBpk73kbqGzeWYD9qGysLXidBMzWeDnN'
