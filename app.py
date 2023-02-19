@@ -1,5 +1,4 @@
 import concurrent.futures
-from bots import kabum_scrape
 from api import api
 from assignments import RETAILERS_FUNC
 
@@ -46,7 +45,6 @@ def scraping(product):
 def main():
     products = api.get_products()
     concurrent.futures.ThreadPoolExecutor().map(scraping, products)
-    
 
 if __name__ == '__main__':
     main()
