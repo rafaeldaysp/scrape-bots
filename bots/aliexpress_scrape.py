@@ -31,6 +31,7 @@ def scrape(url, sku_id):
         price_float_value = float(price[3:].replace('.', '').replace(',', '.')) + slogan_banner_off
         coupons = []
         coupons_conditions = []
+       
         try:
             all_coupons = data['couponModule']['webCouponInfo']['promotionPanelDTO']['shopCoupon'][0]['promotionPanelDetailDTOList']
             for coupon_info in all_coupons:
@@ -44,15 +45,34 @@ def scrape(url, sku_id):
             coupons_conditions.sort()
         except:
             pass
-        
-        coins_off = 0
+        shop_discounts = []
+        shop_discounts_conditions = []
+        shop_percent_discount_off = 0
         try:
-            coins_off_str = data['priceModule']['promotionSellingPointTags'][0]['elementList'][1]['textContent']
-            coins_off_value = float(coins_off_str[0:coins_off_str.find('%')])/100
-            coins_off = coins_off_value*price_float_value
+            all_discounts_list = data['couponModule']['webCouponInfo']['promotionPanelDTO']['storeDiscount'][0]['promotionPanelDetailDTOList']
+            for i in range(len(all_discounts_list)):
+                all_discounts = all_discounts_list[i]['promotionDetailList']
+                if 'Tenha' in all_discounts[0]:
+                    for discount in all_discounts:
+                        shop_discounts.append(float(discount[discount.find('$') + 2:discount.find(',') + 3].replace('.', '').replace(',', '.')))
+                        shop_discounts_conditions.append(float(discount[discount.rfind('$') + 2: discount.rfind(',') + 3].replace('.', '').replace(',', '.')))
+                if 'Compre 1 ' in all_discounts[0]:
+                    percent_value = [float(x) for x in all_discounts[0][all_discounts[0].find('1') + 1:all_discounts[0].find('%')].split(' ') if x.isdigit()][0]
+                    shop_percent_discount_off = round(price_float_value*percent_value/100, 2)
+                    print(shop_percent_discount_off)
+            shop_discounts.sort()
+            shop_discounts_conditions.sort()
         except Exception as e:
-            pass
-    
+            print(e)
+        price_float_value -= shop_percent_discount_off    
+        shop_discount_off = 0
+        for i in range(len(shop_discounts)):
+            try:
+                if price_float_value > shop_discounts_conditions[i]:
+                    shop_discount_off = shop_discounts[i]
+            except Exception as e:
+                pass
+        price_float_value -= shop_discount_off 
         shop_coupon_off = 0
         for i in range(len(coupons)):
             try:
@@ -60,15 +80,22 @@ def scrape(url, sku_id):
                     shop_coupon_off = coupons[i]
             except Exception as e:
                 pass
-        desconto = shop_coupon_off + coins_off
-        price_float_value = price_float_value - desconto
+        price_float_value -= shop_coupon_off
+        coins_off = 0
+        try:
+            coins_off_str = data['priceModule']['promotionSellingPointTags'][0]['elementList'][1]['textContent']
+            coins_off_value = float(coins_off_str[0:coins_off_str.find('%')])/100
+            coins_off = coins_off_value*price_float_value
+        except Exception as e:
+            pass
+        price_float_value -= coins_off
+        print(price, shop_percent_discount_off, shop_discount_off, shop_coupon_off, coins_off, price_float_value)
         price = round(price_float_value, 2)
-        desconto = str(round(desconto, 2)).replace('.', ',')
     
     except Exception as e:
         print(f'Erro no scraping do produto: {url}, de sku: {sku_id}')
         print(e)
-      
+    print(price)
     return price, retalier
 
 if __name__ == '__main__':
