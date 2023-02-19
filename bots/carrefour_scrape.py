@@ -1,8 +1,11 @@
 from bs4 import BeautifulSoup
-from response_handler import get_response
+from api.scrape_request import get_response
 import json
 
-def scrape(url = 'https://www.carrefour.com.br/tela-140-ibm-lenovo-g4070-series-fosca-mp927338838/p'):
+def coupon_validation(description, product):
+    return True
+
+def scrape(url = 'https://www.carrefour.com.br/tela-140-ibm-lenovo-g4070-series-fosca-mp927338838/p', params = None):
     price, store = [-1, None]
     r = get_response(url)
     script = BeautifulSoup(r.content, 'html.parser').find('script', {'type': 'application/ld+json'})

@@ -1,12 +1,14 @@
 from bs4 import BeautifulSoup
 import json
 import re
-from response_handler import get_response
+from api.scrape_request import get_response
+
+def coupon_validation(description, product):
+    return True
 
 def scrape(url, sku_id):
     price = -1
     retalier = None
-    desconto = None
     slogan_banner_off = 0
     try:
         r = get_response(url)
@@ -19,9 +21,8 @@ def scrape(url, sku_id):
             slogan_banner = data['middleBannerModule']['uniformMiddleBanner']['sloganBanner']
             if slogan_banner == 'Preço exclusivo na primeira compra':
                 slogan_banner_off = 15.98
-                print(slogan_banner_off)
             ## colocar aqui quando tiver desconto de 15 a cada 150 
-        except:
+        except: 
             pass
         for i in range(0, qtd_produtos):
             if str(price_info[i]['skuId']) == sku_id:
@@ -63,7 +64,7 @@ def scrape(url, sku_id):
             shop_discounts.sort()
             shop_discounts_conditions.sort()
         except Exception as e:
-            print(e)
+            pass
         price_float_value -= shop_percent_discount_off    
         shop_discount_off = 0
         for i in range(len(shop_discounts)):
@@ -89,13 +90,11 @@ def scrape(url, sku_id):
         except Exception as e:
             pass
         price_float_value -= coins_off
-        print(price, shop_percent_discount_off, shop_discount_off, shop_coupon_off, coins_off, price_float_value)
         price = round(price_float_value, 2)
     
     except Exception as e:
         print(f'Erro no scraping do produto: {url}, de sku: {sku_id}')
         print(e)
-    print(price)
     return price, retalier
 
 if __name__ == '__main__':

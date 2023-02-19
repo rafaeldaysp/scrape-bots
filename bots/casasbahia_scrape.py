@@ -2,7 +2,17 @@ from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 import json
 
-def scrape(url):
+def coupon_validation(description, product):
+    if description:
+        description = json.loads(description)
+        try:
+            if product['category']['name'] not in description['category']:
+                return False
+        except:
+            pass
+    return True
+
+def scrape(url, params = None):
     price, store = [-1, None]
     session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
     r = session.get(url)

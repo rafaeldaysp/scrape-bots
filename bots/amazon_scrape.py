@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
-from response_handler import get_response
+from api.scrape_request import get_response
 
-def scrape(url):
+def coupon_validation(description, product):
+    return True
+
+def scrape(url, params = None):
     response = get_response(url)
     price = -1
     store = None

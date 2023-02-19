@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
 from requests_html import HTMLSession
 
-def scrape(url):
+def coupon_validation(description, product):
+    return True
+
+def scrape(url, params = None):
     session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
     r = session.get(url)
     r.html.render(sleep = 5)

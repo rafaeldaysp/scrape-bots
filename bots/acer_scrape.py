@@ -1,7 +1,10 @@
 from bs4 import BeautifulSoup
-from response_handler import get_response
+from api.scrape_request import get_response
 
-def scrape(url):
+def coupon_validation(description, product):
+    return True
+
+def scrape(url, params = None):
     response = get_response(url)
     soup = BeautifulSoup(response.text, 'html.parser')
     available_status = soup.find('span', class_='b vtex-rich-text-0-x-strong')
@@ -22,6 +25,3 @@ def scrape(url):
     preco_com_cupom = preco_value - cupom_value ## Na versão final, fazer a comparação entre cupons a partir do banco de dados
     preco_final_pix = preco_com_cupom*0.9
     return preco_final_pix, 'Acer'
-
-if __name__ == '__main__':
-    price, store = scrape()
