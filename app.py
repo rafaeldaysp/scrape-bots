@@ -13,11 +13,10 @@ def scraping(product):
             data['available'] = True
             data['price'] = int(price*100)
             data['store'] = store
-            all_coupons = api.get_coupons()
+            all_coupons = api.get_coupons(retailer['retailer']['id'])
             possible_coupons = []
             for i in range(len(all_coupons)):
-                if all_coupons[i]['retailer']['id'] == retailer['retailer']['id']:
-                    if coupon_validation(all_coupons[i]['description'], product):
+                if coupon_validation(all_coupons[i]['description'], product):
                         possible_coupons.append(all_coupons[i])
             best_discount_amount = 0
             best_coupon_id = None
@@ -26,7 +25,7 @@ def scraping(product):
                     coupon['minimum_spend'] = 0
                 if not coupon['store']:
                     coupon['store'] = ''
-                if coupon['retailer']['id'] == retailer['retailer']['id'] and coupon['minimum_spend'] <= price and coupon['store'] in store and coupon['available']:
+                if coupon['retailer_id'] == retailer['retailer']['id'] and coupon['minimum_spend'] <= price and coupon['store'] in store and coupon['available']:
                     discount = coupon['discount']
                     if '%' in discount:
                         discount = float(discount[:-1])*price/100
