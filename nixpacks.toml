@@ -4,5 +4,5 @@ aptPkgs = ["...", "libu2f-udev", "libvulkan1", "libxcb-randr0", "mesa-vulkan-dri
 [phases.build]
 cmds = ["wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb"]
 
-[phases.setup]
+[phases.install]
 cmds = ["apt install ./google-chrome-stable_current_amd64.deb"]
