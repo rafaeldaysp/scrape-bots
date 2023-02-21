@@ -1,34 +1,30 @@
-from chrome_options import service, chrome_options
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from requests_html import AsyncHTMLSession, HTMLSession
+from bs4 import BeautifulSoup
+from fake_useragent import UserAgent
 
 def coupon_validation(description, product):
     return True
 
-def get_response(url):
-    price = -2
+def scrape(url, params=None):
+    price = -1
     store = None
-    navegador = webdriver.Chrome(service=service, options=chrome_options)
-    navegador.get(url)
-    #print(navegador.page_source)
+    ua = str(UserAgent().chrome)
+    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
+    r = session.get(url)
+    r.html.render(sleep=2)
+    site = BeautifulSoup(r.html.raw_html, 'html.parser')
+    r.close()
+    session.close()
     try:
-        price = float(navegador.find_element(By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span/span[2]/span[2]').text.replace('.', '') + '.' + navegador.find_element(By.XPATH, '//*[@id="corePrice_feature_div"]/div/span/span[2]/span[3]').text)
-        store = navegador.find_element(By.XPATH, '//*[@id="sellerProfileTriggerId"]').text
-    except Exception as e:
+        price = float(site.find('div', {'class': 'a-section a-spacing-none aok-align-center'}).find('span', class_='a-offscreen').text[2:].replace('.', '').replace(',', '.'))
+        store = site.find_all('span', class_='a-size-small tabular-buybox-text-message')[1].text
+    except:
         try:
-            store = navegador.find_element(By.XPATH, '//*[@id="tabular-buybox"]/div[1]/div[4]/div/span').text
+            site.find('div', id='availability_feature_div').find('span', class_='a-size-medium a-color-price')
         except:
-            try:
-                navegador.find_element(By.XPATH, '//*[@id="outOfStock"]/div/div[1]/span').text
-                price = -1
-            except Exception as e:
-                pass
+            price = -2
     return price, store
 
-def scrape(url, params=None):
-    webdriver.Chrome(service=service, options=chrome_options)
-    return get_response(url)
-    #concurrent.futures.ThreadPoolExecutor().map(get_response, urls)
-    
+
 if __name__ == '__main__':
-    scrape(['https://amzn.to/3Sz6WnT'])
+    print(scrape('https://www.amazon.com.br/dp/B0BJ6R9T2S?&linkCode=sl1&tag=lucasishii-20&linkId=bbf91b97e5323ba67d626d5304aeb404&language=pt_BR&ref_=as_li_ss_tl'))
