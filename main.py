@@ -43,12 +43,8 @@ def start(product):
         print(product['title'], data, response.status_code)
 
 def main():
-    while True:
-        products = api.get_products()
-        concurrent.futures.ProcessPoolExecutor().map(start, products)
-        #time.sleep(240)
-    # for product in products:
-    #     start(product)
+    products = api.get_products()
+    concurrent.futures.ProcessPoolExecutor().map(start, products)
 
 if __name__ == '__main__':
     main()
