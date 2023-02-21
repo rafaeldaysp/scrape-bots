@@ -27,6 +27,7 @@ def scrape(url, sku_id):
         for i in range(0, qtd_produtos):
             if str(price_info[i]['skuId']) == sku_id:
                 price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
+                print(price)
                 if price_info[i]['skuVal']['availQuantity'] == 0:
                     return -1, retalier
         price_float_value = float(price[3:].replace('.', '').replace(',', '.')) + slogan_banner_off
@@ -99,4 +100,4 @@ def scrape(url, sku_id):
     return price, retalier
 
 if __name__ == '__main__':
-    pass
+    scrape('https://ae01.alicdn.com/kf/S5b5fa461914445a8b63e16ff1e2b70eaI/Machenike-Teclado-Mec-nico-K500-com-Fio-Luzes-RGB-para-Jogos-94-de-Teclas-Troc-veis.png', '12000032028337027')
