@@ -93,7 +93,7 @@ def scrape(url, sku_id):
         price = round(price_float_value, 2)
     
     except Exception as e:
-        print(f'Erro no scraping do produto: {url}, de sku: {sku_id}')
+        #print(f'Erro no scraping do produto: {url}, de sku: {sku_id}')
         print(e)
         price = -2
     return price, retalier
