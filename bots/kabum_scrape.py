@@ -17,7 +17,6 @@ def scrape(url, params = None):
     price = -1
     store = None
     response = get_response(url)
-    print(response.content)
     try:
         site = BeautifulSoup(response.content, 'html.parser')
         price = float(site.find('h4', class_=re.compile('finalPrice')).text[3:].replace('.', '').replace(',', '.'))
