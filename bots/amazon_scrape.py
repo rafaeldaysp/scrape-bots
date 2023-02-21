@@ -10,7 +10,7 @@ def get_response(url):
     store = None
     navegador = webdriver.Chrome(service=service, options=chrome_options)
     navegador.get(url)
-    print(navegador.page_source)
+    #print(navegador.page_source)
     try:
         price = float(navegador.find_element(By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span/span[2]/span[2]').text.replace('.', '') + '.' + navegador.find_element(By.XPATH, '//*[@id="corePrice_feature_div"]/div/span/span[2]/span[3]').text)
         store = navegador.find_element(By.XPATH, '//*[@id="sellerProfileTriggerId"]').text

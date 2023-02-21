@@ -46,10 +46,10 @@ def start(product):
 
 def main():
     products = api.get_products()
-    browser = webdriver.Chrome(service=service, options=chrome_options)
-    #concurrent.futures.ProcessPoolExecutor().map(start, products)
-    for product in products:
-        start(product)
+    #browser = webdriver.Chrome(service=service, options=chrome_options)
+    concurrent.futures.ProcessPoolExecutor().map(start, products)
+    # for product in products:
+    #     start(product)
 
 if __name__ == '__main__':
     main()
