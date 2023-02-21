@@ -1,12 +1,6 @@
 import requests
 import json
-
-#################
-
-MAIN_URL = 'http://localhost:3333'
-API_KEY = 'UfLk014eu5loeUzkBWi67ku9s2FGdNuFTmxcysQGO7BZS0NfIQQyCXpQ1GzAHDUHfQKTJDnAIBSQAOmYbnnczuoe5ys8maufkBpk73kbqGzeWYD9qGysLXidBMzWeDnN'
-
-#################
+from assignments import API_KEY, MAIN_URL
 
 headers = {'api-key': API_KEY}
 

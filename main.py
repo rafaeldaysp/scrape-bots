@@ -1,15 +1,16 @@
 import concurrent.futures
 from api import api
+import time
 from assignments import RETAILERS_FUNC
 
-def scraping(product):
+def start(product):
     retailers = api.get_product_retailers(product['id'])
     for retailer in retailers:
         data = {}
         scrape = RETAILERS_FUNC[retailer['retailer']['id']]['scrape_func']
         coupon_validation = RETAILERS_FUNC[retailer['retailer']['id']]['coupon_validation_func']
         price, store = scrape(retailer['html_url'], retailer['dummy'])
-        if price != -1:
+        if price > 0:
             data['available'] = True
             data['price'] = int(price*100)
             data['store'] = store
@@ -36,14 +37,18 @@ def scraping(product):
                         best_discount_amount = discount
             data['coupon_id'] = best_coupon_id
             data['price'] = int((price - best_discount_amount)*100)
-        else:
+        elif price == -1:
             data['available'] = False
         response = api.update_product_retailers(product['id'], retailer['retailer']['id'], data)
         print(product['title'], data, response.status_code)
 
 def main():
-    products = api.get_products()
-    concurrent.futures.ThreadPoolExecutor().map(scraping, products)
+    while True:
+        products = api.get_products()
+        concurrent.futures.ProcessPoolExecutor().map(start, products)
+        #time.sleep(240)
+    # for product in products:
+    #     start(product)
 
 if __name__ == '__main__':
     main()

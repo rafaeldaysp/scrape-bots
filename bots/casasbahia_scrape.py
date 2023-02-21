@@ -18,6 +18,8 @@ def scrape(url, params = None):
     r = session.get(url)
     r.html.render()
     script = BeautifulSoup(r.html.raw_html, 'html.parser').find('script', {'type': 'application/json'})
+    r.close()
+    session.close()
     try:
         data = json.loads(script.contents[0])
         sku = data['query']['sku']

@@ -1,25 +1,29 @@
+from requests_html import AsyncHTMLSession
 from bs4 import BeautifulSoup
-from api.scrape_request import get_response
+from fake_useragent import UserAgent
 
 def coupon_validation(description, product):
     return True
 
-def scrape(url, params = None):
-    response = get_response(url)
+def scrape(url, params=None):
     price = -1
     store = None
-    if response.status_code != 200:
-        print('Acesso bloqueado pela Amazon' )
-    site = BeautifulSoup(response.text, 'html.parser')
+    ua = str(UserAgent().chrome)
+    asession = AsyncHTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
+    async def get_link():
+        r = await asession.get(url)
+        return r
+    r = asession.run(lambda: get_link())[0]
+    site = BeautifulSoup(r.html.raw_html, 'html.parser')
     try:
-        lista_divs = site.find('div', {'class': 'a-section a-spacing-none aok-align-center'})
-        price = lista_divs.find('span', class_='a-offscreen').text
-        price = float(price[2:].replace('.', '').replace(',', '.'))
-        store = site.find('a', id='sellerProfileTriggerId').text
-    except Exception as e:
-        print(e)
+        price = float(site.find('div', {'class': 'a-section a-spacing-none aok-align-center'}).find('span', class_='a-offscreen').text[2:].replace('.', '').replace(',', '.'))
+        store = site.find_all('span', class_='a-size-small tabular-buybox-text-message')[1].text
+    except:
+        try:
+            site.find('div', id='availability_feature_div').find('span', class_='a-size-medium a-color-price')
+        except:
+            price = -2
     return price, store
 
-
 if __name__ == '__main__':
-    pass
+    scrape('https://www.amazon.com.br/dp/B0BJ6R9T2S?&linkCode=sl1&tag=lucasishii-20&linkId=bbf91b97e5323ba67d626d5304aeb404&language=pt_BR&ref_=as_li_ss_tl')

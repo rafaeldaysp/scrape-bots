@@ -95,6 +95,7 @@ def scrape(url, sku_id):
     except Exception as e:
         print(f'Erro no scraping do produto: {url}, de sku: {sku_id}')
         print(e)
+        price = -2
     return price, retalier
 
 if __name__ == '__main__':
