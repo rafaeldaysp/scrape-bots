@@ -1,29 +1,43 @@
-from requests_html import AsyncHTMLSession
-from bs4 import BeautifulSoup
-from fake_useragent import UserAgent
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_argument('--disable-gpu')
+chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+service = Service(ChromeDriverManager().install())
 
 def coupon_validation(description, product):
     return True
 
-def scrape(url, params=None):
-    price = -1
+def get_response(url):
+    price = -2
     store = None
-    ua = str(UserAgent().chrome)
-    asession = AsyncHTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
-    async def get_link():
-        r = await asession.get(url)
-        return r
-    r = asession.run(lambda: get_link())[0]
-    site = BeautifulSoup(r.html.raw_html, 'html.parser')
+    navegador = webdriver.Chrome(service=service, options=chrome_options)
+    navegador.get(url)
     try:
-        price = float(site.find('div', {'class': 'a-section a-spacing-none aok-align-center'}).find('span', class_='a-offscreen').text[2:].replace('.', '').replace(',', '.'))
-        store = site.find_all('span', class_='a-size-small tabular-buybox-text-message')[1].text
-    except:
+        price = float(navegador.find_element(By.XPATH, '//*[@id="corePriceDisplay_desktop_feature_div"]/div[1]/span/span[2]/span[2]').text.replace('.', '') + '.' + navegador.find_element(By.XPATH, '//*[@id="corePrice_feature_div"]/div/span/span[2]/span[3]').text)
+        store = navegador.find_element(By.XPATH, '//*[@id="sellerProfileTriggerId"]').text
+    except Exception as e:
         try:
-            site.find('div', id='availability_feature_div').find('span', class_='a-size-medium a-color-price')
+            store = navegador.find_element(By.XPATH, '//*[@id="tabular-buybox"]/div[1]/div[4]/div/span').text
         except:
-            price = -2
+            try:
+                navegador.find_element(By.XPATH, '//*[@id="outOfStock"]/div/div[1]/span').text
+                price = -1
+            except Exception as e:
+                pass
     return price, store
 
+def scrape(url, params=None):
+    webdriver.Chrome(service=service, options=chrome_options)
+    return get_response(url)
+    #concurrent.futures.ThreadPoolExecutor().map(get_response, urls)
+    
 if __name__ == '__main__':
-    scrape('https://www.amazon.com.br/dp/B0BJ6R9T2S?&linkCode=sl1&tag=lucasishii-20&linkId=bbf91b97e5323ba67d626d5304aeb404&language=pt_BR&ref_=as_li_ss_tl')
+    scrape(['https://amzn.to/3Sz6WnT'])
