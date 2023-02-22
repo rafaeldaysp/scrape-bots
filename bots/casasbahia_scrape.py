@@ -14,9 +14,14 @@ def coupon_validation(description, product):
 
 def scrape(url, params = None):
     price, store = [-1, None]
-    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
-    r = session.get(url)
-    r.html.render()
+    while True:
+        try:
+            session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
+            r = session.get(url)
+            r.html.render()
+            break
+        except:
+            pass
     script = BeautifulSoup(r.html.raw_html, 'html.parser').find('script', {'type': 'application/json'})
     r.close()
     session.close()

@@ -9,9 +9,14 @@ def scrape(url, params=None):
     price = -1
     store = None
     ua = str(UserAgent().chrome)
-    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent=" + ua])
-    r = session.get(url)
-    r.html.render(sleep=2)
+    while True:
+        try:
+            session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
+            r = session.get(url)
+            r.html.render(sleep = 2)
+            break
+        except:
+            pass
     site = BeautifulSoup(r.html.raw_html, 'html.parser')
     r.close()
     session.close()
