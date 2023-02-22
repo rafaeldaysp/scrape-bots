@@ -7,9 +7,12 @@ def start(product):
     retailers = api.get_product_retailers(product['id'])
     for retailer in retailers:
         data = {}
-        scrape = RETAILERS_FUNC[retailer['retailer']['id']]['scrape_func']
-        coupon_validation = RETAILERS_FUNC[retailer['retailer']['id']]['coupon_validation_func']
-        price, store = scrape(retailer['html_url'], retailer['dummy'])
+        try:
+            scrape = RETAILERS_FUNC[retailer['retailer']['id']]['scrape_func']
+            coupon_validation = RETAILERS_FUNC[retailer['retailer']['id']]['coupon_validation_func']
+            price, store = scrape(retailer['html_url'], retailer['dummy'])
+        except:
+            price = -2
         if price > 0:
             data['available'] = True
             data['price'] = int(price*100)
