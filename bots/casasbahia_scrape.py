@@ -22,7 +22,8 @@ def scrape(url, params = None):
             r = session.get(url)
             r.html.render()
             break
-        except:
+        except Exception as e:
+            print('Scraping Casas Bahia bad request: ', e)
             pass
     script = BeautifulSoup(r.html.raw_html, 'html.parser').find('script', {'type': 'application/json'})
     r.close()

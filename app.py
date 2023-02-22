@@ -11,7 +11,8 @@ def start(product):
             scrape = RETAILERS_FUNC[retailer['retailer']['id']]['scrape_func']
             coupon_validation = RETAILERS_FUNC[retailer['retailer']['id']]['coupon_validation_func']
             price, store = scrape(retailer['html_url'], retailer['dummy'])
-        except:
+        except Exception as e:
+            print('Skipping this product...')
             price = -2
         if price > 0:
             data['available'] = True
