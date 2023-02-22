@@ -3,7 +3,7 @@ import app
 
 sched = BlockingScheduler()
 
-@sched.scheduled_job('interval', minutes=1)
+@sched.scheduled_job('interval', seconds=30)
 def timed_job():
     print('Starting scrape...')
     app.main()
