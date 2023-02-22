@@ -31,6 +31,5 @@ def setup_ali():
     browser.find_element(By.XPATH, '//*[@id="nav-global"]/div[4]/div/div/div/div[5]/button').click()
     time.sleep(5)
     browser.get_cookies()
-    price = browser.find_element(By.XPATH, '//*[@id="root"]/div/div[3]/div/div[2]/div[4]/div/span').text
-    print(price)
+    print(browser.find_element(By.XPATH, '//*[@id="root"]/div/div[3]/div/div[2]/div[4]/div/span').text)
     print('AliExpress setup finished!')
