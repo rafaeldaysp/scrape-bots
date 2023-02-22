@@ -27,7 +27,6 @@ def scrape(url, sku_id):
         for i in range(0, qtd_produtos):
             if str(price_info[i]['skuId']) == sku_id:
                 price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
-                print(price)
                 if price_info[i]['skuVal']['availQuantity'] == 0:
                     return -1, retalier
         price_float_value = float(price[3:].replace('.', '').replace(',', '.')) + slogan_banner_off
