@@ -15,9 +15,12 @@ def coupon_validation(description, product):
 def scrape(url, params = None):
     response = get_response(url)
     soup = BeautifulSoup(response.text, 'html.parser')
-    price = soup.find('div', class_= 'p-price').find('strong').text.split(' ')[1][:-1]
-    price_value = price.replace('.', '').replace(',', '.')
-    print(price_value)
+    try:
+        price = soup.find('div', class_= 'p-price').find('strong').text.split(' ')[1][:-1]
+        price_value = float(price.replace('.', '').replace(',', '.'))
+    except Exception as e:
+        print(e)
+    return price_value, 'Magalu'
 
     
 
