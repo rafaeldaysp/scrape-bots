@@ -43,6 +43,7 @@ def start(product):
         print(product['title'], data)
 
 def main():
+    HTMLSession(browser_args=["--no-sandbox"])
     products = api.get_products()
     #browser = webdriver.Chrome(service=service, options=chrome_options)
     concurrent.futures.ProcessPoolExecutor().map(start, products)
