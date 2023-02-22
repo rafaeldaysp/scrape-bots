@@ -1,15 +1,17 @@
 from requests_html import HTMLSession
 from bs4 import BeautifulSoup
 import re
+from fake_useragent import UserAgent
 
 def coupon_validation(description, product):
     return True
 
 def scrape(url, params=None):
     price, store = [-1, None]
+    ua = str(UserAgent().chrome)
     while True:
         try:
-            session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
+            session = HTMLSession(browser_args=["--no-sandbox", "--user-agent="+ua])
             r = session.get(url)
             r.html.render(sleep = 2)
             break

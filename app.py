@@ -1,6 +1,7 @@
 import concurrent.futures
 from api import api
 from assignments import RETAILERS_FUNC
+import browser_setup
 
 def start(product):
     retailers = api.get_product_retailers(product['id'])
@@ -49,4 +50,5 @@ def main():
     #     start(product)
 
 if __name__ == '__main__':
+    browser_setup.run()
     main()
