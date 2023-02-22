@@ -1,1 +1,1 @@
-worker: python app.py
+worker: starter_heroku.py
