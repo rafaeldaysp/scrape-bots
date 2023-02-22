@@ -31,7 +31,7 @@ def scrape(url, params = None):
         price, store = [json_data['paymentMethodDiscount']['sellPriceWithDiscount'], json_data['sellers'][0]['name']]
     except Exception as e:
         print(e)
-    print(price, store)
+    return price, store
 
 if __name__ == '__main__':
     pass
