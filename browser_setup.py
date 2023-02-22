@@ -5,5 +5,6 @@ def run():
     ua = UserAgent().chrome
     session = HTMLSession(browser_args=["--no-sandbox", "--user-agent="+ua])
     session.get('https://google.com/').html.render()
+    session.close()
 if __name__=='__name__':
     run()
