@@ -39,14 +39,14 @@ def start(product):
         elif price == -1:
             data['available'] = False
         response = api.update_product_retailers(product['id'], retailer['retailer']['id'], data)
-        print(product['title'], data, response.status_code)
+        print(product['title'], data)
 
 def main():
     products = api.get_products()
     #browser = webdriver.Chrome(service=service, options=chrome_options)
-    concurrent.futures.ProcessPoolExecutor().map(start, products)
-    # for product in products:
-    #     start(product)
+    #concurrent.futures.ProcessPoolExecutor().map(start, products)
+    for product in products:
+        start(product)
 
 if __name__ == '__main__':
     main()

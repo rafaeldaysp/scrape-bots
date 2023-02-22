@@ -21,6 +21,6 @@ def scrape(url, params = None):
         site = BeautifulSoup(response.content, 'html.parser')
         price = float(site.find('h4', class_=re.compile('finalPrice')).text[3:].replace('.', '').replace(',', '.'))
         store = site.find('div', class_=re.compile('generalInfo')).find('b').text
-    except:
-        pass
+    except Exception as e:
+       print(e) 
     return price, store
