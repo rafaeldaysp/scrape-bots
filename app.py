@@ -1,6 +1,7 @@
 import concurrent.futures
 from api import api
 from assignments import RETAILERS_FUNC
+from requests_html import HTMLSession
 
 def start(product):
     retailers = api.get_product_retailers(product['id'])
@@ -49,4 +50,6 @@ def main():
     #     start(product)
 
 if __name__ == '__main__':
+    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
+    session.close()
     main()
