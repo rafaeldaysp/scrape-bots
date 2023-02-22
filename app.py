@@ -2,7 +2,6 @@ import concurrent.futures
 from api import api
 from assignments import RETAILERS_FUNC
 from requests_html import HTMLSession
-import aliexpress_setup
 
 def start(product):
     retailers = api.get_product_retailers(product['id'])

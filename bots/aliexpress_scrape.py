@@ -100,4 +100,4 @@ def scrape(url, sku_id):
     return price, retalier
 
 if __name__ == '__main__':
-    scrape('https://ae01.alicdn.com/kf/S5b5fa461914445a8b63e16ff1e2b70eaI/Machenike-Teclado-Mec-nico-K500-com-Fio-Luzes-RGB-para-Jogos-94-de-Teclas-Troc-veis.png', '12000032028337027')
+    scrape('https://pt.aliexpress.com/item/1005005187081045.html', '12000032028337027')
