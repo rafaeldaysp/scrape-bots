@@ -7,14 +7,13 @@ def coupon_validation(description, product):
 
 def scrape(url, params = None):
     ua = str(UserAgent().chrome)
-    while True:
-        try:
-            session = HTMLSession(browser_args=["--no-sandbox", "--user-agent="+ua])
-            r = session.get(url)
-            r.html.render(sleep = 5)
-            break
-        except:
-            pass
+    try:
+        session = HTMLSession(browser_args=["--no-sandbox", "--user-agent="+ua])
+        r = session.get(url)
+        r.html.render(sleep = 5)
+
+    except:
+        pass
     price = -1
     try:
         price = float(BeautifulSoup(r.html.raw_html, 'html.parser').find_all('h3', class_='MuiTypography-root MuiTypography-h3')[0].text.replace('.', '').replace(',', '.'))
