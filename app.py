@@ -1,9 +1,6 @@
 import concurrent.futures
 from api import api
-import time
 from assignments import RETAILERS_FUNC
-from selenium import webdriver
-from chrome_options import service, chrome_options
 
 def start(product):
     retailers = api.get_product_retailers(product['id'])
@@ -47,9 +44,9 @@ def start(product):
 def main():
     products = api.get_products()
     #browser = webdriver.Chrome(service=service, options=chrome_options)
-    #concurrent.futures.ProcessPoolExecutor().map(start, products)
-    for product in products:
-        start(product)
+    concurrent.futures.ProcessPoolExecutor().map(start, products)
+    # for product in products:
+    #     start(product)
 
 if __name__ == '__main__':
     main()
