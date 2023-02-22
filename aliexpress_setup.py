@@ -1,17 +1,36 @@
-import requests
-import re
-import json
+from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.common.by import By
+import time
+
+chrome_options = Options()
+chrome_options.add_argument('--headless')
+chrome_options.add_argument('--no-sandbox')
+chrome_options.add_argument('--disable-dev-shm-usage')
+chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+service = Service(ChromeDriverManager().install())
 
 url = 'https://s.click.aliexpress.com/e/_DkMBEZx'
 
-headers = {'Accept-Language': 'pt-BR,pt;q=0.9',
-           'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36',
-           'cookie': 'xman_t=bihJm9DwnQHIornbBqSbcLRsZh3pYzjOhtsuLt6XNA44ySDY8pVjSt0ieRAQToTZ; _ga=GA1.1.116850409.1670721971; _ga_save=yes; xman_f=Eh95/sIl1+t/Y2WkZFdvWh+OPWFKF0HmFPaZpObI4PgbPGaZRY7uTBsMJjqMZ+a3icmBUOEkUnzbnvG5Ob+dTTMZuxX1IkJ9VonlMOqvyC3bfsOI1YLeHg==; XSRF-TOKEN=f804aac9-0008-40c4-9bc5-526afda1888a; intl_locale=en_US; acs_usuc_t=x_csrf=318d1zjrt0vv&acs_rt=3f3462ac61714e7fb68e8d963d66f2b8; AKA_A2=A; _m_h5_tk=0b335f4a3fc0ba00cd7035972b1f60db_1677040422666; _m_h5_tk_enc=9aac1893ee8a657cb6390930d9d281d0; xman_us_f=x_locale=en_US&x_l=0&x_c_chg=0&acs_rt=4ba0548134764b7786731ef60a8d595b; aep_history=keywords%5E%0Akeywords%09%0A%0Aproduct_selloffer%5E%0Aproduct_selloffer%091005005184541227; l=fBLMDdNrTdYkfczzBO5C-urza779fBdXGsPzaNbMiIEGa6s1UF_FGOCePuuy0dtjQT50qUKrl5ZFzdn9Slz_WxGNb6vNckOosZve8e__E-ZF.; tfstk=cTmdB-qw-CAn4iRubkLGz_ikEX-dawR819Nl2myndBlyi67O5svqmm3urew7MhvO.; isg=BL29V4TAgin4hSZFfiL4AR4izBm3WvGst_YYJX8FCpRDttHoTqlWfockYPLwNglk; aep_usuc_f=site=usa&c_tp=BRL&region=BR&b_locale=en_US&province=903200130000000000&city=903200130063000000; JSESSIONID=756567A2F479994594ABECE3B3096BF6; intl_common_forever=nlHWO7ppMgxSerS6Ra8KGww8PqD3KiM09nhcyjxp74eQvUf0EWNGGQ==',
-           }
-
-r = requests.get(url, headers=headers)
-match = re.search(r'data: ({.+})', r.text).group(1)
-data = json.loads(match)
-retalier = data['storeModule']['storeName']
-price_info = data['skuModule']['skuPriceList']
-print(price_info)
+def setup_ali():
+    browser = webdriver.Chrome(service=service, options=chrome_options)
+    browser.get(url)
+    time.sleep(3)
+    browser.get_cookies()
+    while True:
+        try:
+            browser.find_element(By.XPATH, '//*[@id="header-zip-input"]').send_keys('38402-680')
+            break
+        except:
+            browser.find_element(By.XPATH, '//*[@id="nav-global"]/div[4]').click()
+    time.sleep(3)
+    browser.find_element(By.XPATH, '//*[@id="header-zip-option"]/li/div').click()
+    time.sleep(2)
+    browser.find_element(By.XPATH, '//*[@id="nav-global"]/div[4]/div/div/div/div[5]/button').click()
+    time.sleep(5)
+    browser.get_cookies()
+    price = browser.find_element(By.XPATH, '//*[@id="root"]/div/div[3]/div/div[2]/div[4]/div/span').text
+    print(price)
+    print('AliExpress setup finished!')

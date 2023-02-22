@@ -1,5 +1,5 @@
 from apscheduler.schedulers.blocking import BlockingScheduler
-import app
+import app, aliexpress_setup
 
 sched = BlockingScheduler()
 
@@ -7,6 +7,6 @@ sched = BlockingScheduler()
 def timed_job():
     print('Starting scrape...')
     app.main()
-    
 
+aliexpress_setup.setup_ali()
 sched.start()
