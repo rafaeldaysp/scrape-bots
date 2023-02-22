@@ -43,13 +43,12 @@ def start(product):
         print(product['title'], data)
 
 def main():
-    products = api.get_products()
-    #browser = webdriver.Chrome(service=service, options=chrome_options)
-    concurrent.futures.ProcessPoolExecutor().map(start, products)
+    for i in range(2)
+        products = api.get_products()
+        #browser = webdriver.Chrome(service=service, options=chrome_options)
+        concurrent.futures.ProcessPoolExecutor().map(start, products)
     # for product in products:
     #     start(product)
 
 if __name__ == '__main__':
-    session = HTMLSession(browser_args=["--no-sandbox", "--user-agent='Testing'"])
-    session.close()
     main()
