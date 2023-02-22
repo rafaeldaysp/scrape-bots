@@ -43,10 +43,9 @@ def start(product):
         print(product['title'], data)
 
 def main():
-    for i in range(2)
-        products = api.get_products()
-        #browser = webdriver.Chrome(service=service, options=chrome_options)
-        concurrent.futures.ProcessPoolExecutor().map(start, products)
+    products = api.get_products()
+    #browser = webdriver.Chrome(service=service, options=chrome_options)
+    concurrent.futures.ProcessPoolExecutor().map(start, products)
     # for product in products:
     #     start(product)
 
