@@ -19,6 +19,7 @@ def scrape(url, params = None):
     r = session.get(url)
     r.html.render()
     site = BeautifulSoup(r.html.raw_html, 'html.parser')
+    print(site)
     r.close()
     session.close()
     try:
