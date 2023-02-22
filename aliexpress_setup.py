@@ -33,3 +33,5 @@ def setup_ali():
     browser.get_cookies()
     print(browser.find_element(By.XPATH, '//*[@id="root"]/div/div[3]/div/div[2]/div[4]/div/span').text)
     print('AliExpress setup finished!')
+
+setup_ali()

@@ -2,6 +2,7 @@ import concurrent.futures
 from api import api
 from assignments import RETAILERS_FUNC
 from requests_html import HTMLSession
+import aliexpress_setup
 
 def start(product):
     retailers = api.get_product_retailers(product['id'])
@@ -43,6 +44,7 @@ def start(product):
         print(product['title'], data)
 
 def main():
+    aliexpress_setup.setup_ali()
     products = api.get_products()
     #browser = webdriver.Chrome(service=service, options=chrome_options)
     concurrent.futures.ProcessPoolExecutor().map(start, products)
