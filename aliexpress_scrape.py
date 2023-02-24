@@ -22,12 +22,11 @@ def scrape(url, sku_id):
         retalier = data['storeModule']['storeName']
         price_info = data['skuModule']['skuPriceList']
         qtd_produtos = len(price_info)
-        
         for i in range(0, qtd_produtos):
             if str(price_info[i]['skuId']) == sku_id:
-                price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
                 if price_info[i]['skuVal']['availQuantity'] == 0:
                     return -1, retalier
+                price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
         price_float_value = float(price[3:].replace('.', '').replace(',', '.'))
         try:
             slogan_banner = data['middleBannerModule']['uniformMiddleBanner']['sloganBanner']
@@ -106,4 +105,4 @@ def scrape(url, sku_id):
     return price, retalier
 
 if __name__ == '__main__':
-    print(scrape('https://pt.aliexpress.com/item/1005004520091398.html?spm=a2g0o.productlist.main.10.735e55d20hx4aO&algo_pvid=ce614f9f-e0f8-4005-beb3-90015150a6dd&aem_p4p_detail=202302221011231815259785417540002226346&algo_exp_id=ce614f9f-e0f8-4005-beb3-90015150a6dd-3&pdp_ext_f=%7B%22sku_id%22%3A%2212000032086970734%22%7D&pdp_npi=3%40dis%21BRL%21634.8%21292.01%21%21%21%21%21%402102110316770894831834223d06f9%2112000032086970734%21sea%21BR%211679207800&curPageLogUid=PbRzk1isL8ak&ad_pvid=202302221011231815259785417540002226346_4&ad_pvid=202302221011231815259785417540002226346_4', '12000029455297948'))
+    print(scrape('https://pt.aliexpress.com/item/4000804563961.html?UTABTest=aliabtest376206_526413&aff_fcid=1d1a1c68511a45488f63cf8d298511f3-1677274789695-06841-_DcGLeg1&tt=CPS_NORMAL&aff_fsk=_DcGLeg1&aff_platform=shareComponent-detail&sk=_DcGLeg1&aff_trace_key=1d1a1c68511a45488f63cf8d298511f3-1677274789695-06841-_DcGLeg1&terminal_id=4ba0548134764b7786731ef60a8d595b&OLP=1084702908_f_group1&o_s_id=1084702908&afSmartRedirect=y', '12000031936107199'))
