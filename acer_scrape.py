@@ -23,14 +23,24 @@ def scrape(url, **kwargs):
     coupons = soup.find_all('div', class_='vtex-flex-layout-0-x-flexColChild vtex-flex-layout-0-x-flexColChild--flagCoupon pb0')
     cupom_value = 0
     i = 0
-    for cupom in coupons:
-        i += 1
-        if cupom.text:
-            cupom_value = i*100
-            #print('Cupom de {} reais'.format(cupom_value) + ': ' + str(cupom_value) + 'off')
-            data = {'code': str(cupom_value) + 'off', 'discount': str(cupom_value), 'retailer_id': kwargs['retailer_id'], 'available': True, 'description': '{"product_id": "'+ kwargs['product_id'] +'"}'}
-            coupons = api.create_coupon(data)
-    
+    try:
+        for cupom in coupons:
+            i += 1
+            if cupom.text:
+                cupom_value = i*100
+                #print('Cupom de {} reais'.format(cupom_value) + ': ' + str(cupom_value) + 'off')
+                data = {'code': str(cupom_value) + 'off', 'discount': str(cupom_value), 'retailer_id': kwargs['retailer_id'], 'available': True, 'description': '{"product_id": "'+ kwargs['product_id'] +'"}'}
+                coupons = api.create_coupon(data)
+    except:
+        pass
+    if cupom_value == 0:
+        coupons = api.get_coupons(kwargs['retailer_id'])
+        for coupon in coupons:
+            try:
+                if json.loads(coupon['description'])['product_id'] == kwargs['product_id']:
+                    api.delete_coupon(coupon['id'])
+            except:
+                pass
     precos = soup.find_all('span', class_='vtex-product-price-1-x-currencyContainer vtex-product-price-1-x-currencyContainer--productPage-installments')
     preco = precos[0].text
     preco_value = float(preco[3:].replace('.', '').replace(',', '.'))
