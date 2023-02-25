@@ -3,6 +3,9 @@ from api.scrape_request import get_response
 
 url = 'https://click.linksynergy.com/deeplink?id=HWP*/f3BEF0&mid=47364&murl=https%3A%2F%2Fwww.lenovo.com%2Fbr%2Fpt%2Flaptops%2Fideapad%2Fserie-300%2FIdeaPad-3-15ALC6%2Fp%2F82MFS00000%3F'
 
+def coupon_validation(description, product):
+    return True
+
 def scrape(url, **kwargs):
     price = -2
     site = BeautifulSoup(get_response(url).content, 'html.parser')
