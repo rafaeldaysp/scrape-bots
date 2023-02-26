@@ -11,6 +11,11 @@ def coupon_validation(description, product):
                 return False
         except:
             pass
+        try:
+            if product['id'] not in description['product_id']:
+                return False
+        except:
+            pass
     return True
 
 def scrape(url, **kwargs):
