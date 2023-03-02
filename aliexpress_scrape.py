@@ -12,9 +12,10 @@ def get_response(url):
 def coupon_validation(description, product):
     return True
 
-def scrape(url, sku_id):
+def scrape(url, **kwargs):
     price = -1
     retalier = None
+    sku_id = kwargs['sku']
     try:
         r = get_response(url)
         match = re.search(r'data: ({.+})', r.text).group(1)
@@ -43,9 +44,9 @@ def scrape(url, sku_id):
             promo_desc = int(price_float_value/values_promo[1])*values_promo[0]
             if promo_desc > values_promo[2]:
                 promo_desc = values_promo[2]
+            price_float_value -= promo_desc
         except:
             pass
-        price_float_value -= promo_desc
         
         coupons = []
         coupons_conditions = []
