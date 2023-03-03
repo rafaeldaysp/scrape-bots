@@ -27,7 +27,14 @@ def scrape(url, **kwargs):
             if str(price_info[i]['skuId']) == sku_id:
                 if price_info[i]['skuVal']['availQuantity'] == 0:
                     return -1, retalier
-                price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
+                print(price_info[i]['skuVal'])
+                try:
+                    price = price_info[i]['skuVal']['skuActivityAmount']['formatedAmount']
+                except:
+                    try:
+                        price = price_info[i]['skuVal']['skuAmount']['formatedAmount']
+                    except:
+                        pass
         price_float_value = float(price[3:].replace('.', '').replace(',', '.'))
         try:
             slogan_banner = data['middleBannerModule']['uniformMiddleBanner']['sloganBanner']
@@ -117,4 +124,4 @@ def scrape(url, **kwargs):
     return price, retalier
 
 if __name__ == '__main__':
-    print(scrape('https://pt.aliexpress.com/item/1005005195329185.html?pdp_ext_f=%7B%22ship_from%22:%22CN%22,%22sku_id%22:%2212000032093838411%22%7D&&scm=1007.25281.317569.0&scm_id=1007.25281.317569.0&scm-url=1007.25281.317569.0&pvid=202bf4cf-e566-480d-8387-5057587255f5&utparam=%257B%2522process_id%2522%253A%252240%2522%252C%2522x_object_type%2522%253A%2522product%2522%252C%2522pvid%2522%253A%2522202bf4cf-e566-480d-8387-5057587255f5%2522%252C%2522belongs%2522%253A%255B%257B%2522floor_id%2522%253A%252236569244%2522%252C%2522id%2522%253A%252232032614%2522%252C%2522type%2522%253A%2522dataset%2522%257D%252C%257B%2522id_list%2522%253A%255B%255D%252C%2522type%2522%253A%2522gbrain%2522%257D%255D%252C%2522pageSize%2522%253A%252220%2522%252C%2522language%2522%253A%2522pt%2522%252C%2522scm%2522%253A%25221007.25281.317569.0%2522%252C%2522countryId%2522%253A%2522BR%2522%252C%2522scene%2522%253A%2522TopSelection-Waterfall%2522%252C%2522tpp_buckets%2522%253A%252221669%25230%2523265320%252341_21669%25234190%252319164%2523645_15281%25230%2523317569%25230%2522%252C%2522x_object_id%2522%253A%25221005005195329185%2522%257D&pdp_npi=2%40dis%21BRL%21R%24%20341%2C53%21R%24%20167%2C35%21%21%21%21%21%400b89a67f16777212742615583e0942%2112000032093838411%21gdf&spm=a2g0o.tm1000000741.4408202170.0&aecmd=true', '12000032093838411'))
+    print(scrape('https://pt.aliexpress.com/item/1005004995292306.html?aff_fcid=289d4af8a3494137b2266e8bc52884dd-1677883348930-05604-_DkqdUev&tt=CPS_NORMAL&aff_fsk=_DkqdUev&aff_platform=shareComponent-detail&sk=_DkqdUev&aff_trace_key=289d4af8a3494137b2266e8bc52884dd-1677883348930-05604-_DkqdUev&terminal_id=4ba0548134764b7786731ef60a8d595b&afSmartRedirect=y', sku='12000031283914993'))
