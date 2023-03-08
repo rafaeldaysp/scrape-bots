@@ -15,14 +15,7 @@ def coupon_validation(description, product):
 def scrape(url, **kwargs):
     price, store = [-1, 'Casas Bahia']
     try:
-        session = HTMLSession(browser_args=["--no-sandbox", "--user-agent=Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.14 Safari/534.24"])
-        r = session.get(url)
-        r.html.render(sleep=2)
-        script = BeautifulSoup(r.html.raw_html, 'html.parser').find('script', {'type': 'application/json'})
-        r.close()
-        session.close()
-        data = json.loads(script.contents[0])
-        sku = data['query']['sku']
+        sku = kwargs['sku']
         url_data = f'https://pdp-api.casasbahia.com.br/api/v2/sku/{sku}/price/source/CB?utm_source=undefined&take=undefined&device_type=DESKTOP'
         session2 = HTMLSession(browser_args=["--no-sandbox", "--user-agent=Mozilla/5.0 (X11; Linux i686) AppleWebKit/534.24 (KHTML, like Gecko) Chrome/11.0.696.14 Safari/534.24"])
         r2 = session2.get(url_data)
